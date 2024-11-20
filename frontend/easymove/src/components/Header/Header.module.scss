@@ -1,0 +1,13 @@
+@use "../../util/mixins.scss" as mixin;
+
+.container_header { grid-area: header; }
+
+.container_header {
+    @include mixin.flexbox(); 
+    height: 61px;
+    background-color: rgb(33, 31, 31);
+    border-bottom: solid steelblue 4px;
+    color: rgb(225, 224, 224);
+    width: 100%;
+}
+

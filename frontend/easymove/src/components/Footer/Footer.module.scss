@@ -1,0 +1,35 @@
+@use "../../util/mixins.scss" as mixin;
+
+.container_rodape {
+    @include mixin.flexbox(); 
+    padding: 10px;
+    width: 100%;
+    background-color: steelblue;
+    border-top: solid black 1px;
+    color: black;
+    position: fixed;
+    bottom: 0;
+  }
+
+.container_rodape { grid-area: footer; }
+
+.descricao {
+    font-size: 1.2em;
+}
+
+.icones:hover{
+    filter: invert(70%);
+}
+
+.icones{
+    margin-left: 5px;
+    color: black;
+}
+
+#instagram{
+    font-size: 1.5rem;
+}
+
+#email{
+    font-size: 1.7rem;
+}

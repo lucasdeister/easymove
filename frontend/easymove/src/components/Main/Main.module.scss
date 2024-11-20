@@ -1,0 +1,19 @@
+@use "../../util/mixins.scss" as mixin;
+
+.container_botoes_principais {
+  @include mixin.flexbox();
+  margin-bottom: 40px;
+}
+
+
+.container_main {
+  grid-area: main;
+}
+
+.container_main {
+  width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-right: auto;
+  margin-left: auto;
+}
