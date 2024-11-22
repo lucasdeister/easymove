@@ -1,0 +1,24 @@
+
+.container_botao{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    .botao {
+        font-weight: 600;
+        border-radius: 5px;
+        color: rgb(242, 243, 244);
+        border: none;
+        padding: 10px;
+        text-decoration: none;
+        font-size: 16px;
+        margin-top: 20px;
+        background-color: rgb(109, 155, 155);
+    }
+}
+
+
+.botao {
+        &:hover {
+            background-color: rgb(94, 135, 135);
+        }
+}
