@@ -6,11 +6,10 @@ interface CampoProps {
   nome: string;
   tipo: string;
   value: string;
-  disabled: boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function Campo({ nome, tipo, value, onChange, disabled }: CampoProps) {
+function Campo({ nome, tipo, value, onChange }: CampoProps) {
 
   return (
     <div className={`form-group mt-3`}>
@@ -25,7 +24,6 @@ function Campo({ nome, tipo, value, onChange, disabled }: CampoProps) {
         value={value}
         onChange={onChange}
         required
-        disabled={disabled}
         {...(tipo === "number" ? { min: "0" } : {})}
       />
     </div>
