@@ -14,7 +14,7 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
 
   const { campo_origem, setCampoOrigem, limparStates,
     campo_id, setCampoId, campo_destino, setCampoDestino,
-    modalSelecaoMotorista, setModalNome, setModalState
+    setModalNome, setModalState
   } = useModalContext();
 
 
@@ -116,7 +116,7 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
         )}
         </Modal.Body>
         <Modal.Footer>
-          {modalSelecaoMotorista &&
+          {nome_modal ==="Confirmar viagem" &&
             <>
               <Button variant="secondary" onClick={fecharModal}>Cancelar</Button>
               <Button variant="primary" onClick={solicitarViagem}>Confirmar</Button>
