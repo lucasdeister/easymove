@@ -4,6 +4,7 @@ import Table from "../../Table/Table";
 import { useEffect, useState } from "react";
 import Motorista from "../../types/IMotorista";
 import Action from "../../Table/Action/Action";
+import { useModalContext } from "../../../context/ModalContext";
 
 interface ContentModalSelecaoMotoristaProps {
   campo_id: number;
@@ -11,6 +12,8 @@ interface ContentModalSelecaoMotoristaProps {
 }
 
 const ContentModalSelecaoMotorista = ({}: ContentModalSelecaoMotoristaProps) => {
+
+  const { setModalNome, setDescricaoMotorista, setModalDescricao, setComentarioMotorista } = useModalContext();
 
   const motoristas = [
     {
@@ -57,8 +60,17 @@ const ContentModalSelecaoMotorista = ({}: ContentModalSelecaoMotoristaProps) => 
   }, []);
 
 
-  const exibirModalDescricao = () => {
-    
+  const exibirModalDescricao = (motorista: Motorista) => {
+    setModalNome("Descrição motorista");
+    setDescricaoMotorista(motorista.descricao);
+    setModalDescricao(true);
+  }
+
+  
+  const exibirModalComentario = (motorista: Motorista) => {
+    setModalNome("Comentário motorista");
+    setComentarioMotorista(motorista.comment);
+    setModalDescricao(true);
   }
 
   const renderRow = (motorista: Motorista) => (
@@ -66,11 +78,11 @@ const ContentModalSelecaoMotorista = ({}: ContentModalSelecaoMotoristaProps) => 
       <td>{motorista.nome}</td>
       {!isMobile &&
         <td>
-          <a href="#" onClick={exibirModalDescricao}>Descrição</a>
+          <a href="#" onClick={() => exibirModalDescricao(motorista)}>Descrição</a>
         </td>}
       {!isMobile && <td>{motorista.carro}</td>}
       <td>
-        <a href="">{motorista.rating}</a>
+        <a href="#" onClick={() => exibirModalComentario(motorista)}>{motorista.rating}</a>
         </td>
       <td>{motorista.taxa_km}</td>
       <td>
@@ -84,7 +96,9 @@ const ContentModalSelecaoMotorista = ({}: ContentModalSelecaoMotoristaProps) => 
     <form>
       <div className={styles.container_mapa}>
       </div>
-      <Table columns={isMobile ? columnsMobile : columnsDesktop} data={motoristas} renderRow={renderRow} />
+      <Table
+        columns={isMobile ? columnsMobile : columnsDesktop}
+        data={motoristas} renderRow={renderRow} />
     </form>
   )
 }

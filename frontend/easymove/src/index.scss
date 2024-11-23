@@ -14,6 +14,10 @@ body, html {
   max-width: 1000px;
 }
 
+.modal-content:has(textarea) {
+  height: 300px;
+}
+
 a{
   text-decoration: none;
 }

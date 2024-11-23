@@ -7,6 +7,9 @@ interface ModalContextProps {
   campo_id: number;
   campo_destino: string;
   modalSelecaoMotorista: boolean;
+  modalDescricao: boolean;
+  descricaoMotorista: string;
+  comentarioMotorista: string;
   setCampoOrigem: (campo_origem: string) => void;
   setCampoId: (campo_id: number) => void;
   setCampoDestino: (campo_destino: string) => void;
@@ -14,6 +17,9 @@ interface ModalContextProps {
   setModalNome: (state: string) => void;
   limparStates: () => void;
   setModalSelecaoMotorista: (modalSelecaoMotorista: boolean) => void;
+  setModalDescricao: (modalDescricao: boolean) => void;
+  setDescricaoMotorista: (descricaoMotorista: string) => void;
+  setComentarioMotorista: (comentarioMotorista: string) => void;
 }
 
 // Criando o contexto com tipo adequado
@@ -25,13 +31,17 @@ interface ModalProviderProps {
 }
 
 export const ModalProvider = ({ children }: ModalProviderProps) => {
+  const [modalNome, setModalNome] = useState<string>("");
   const [modalState, setModalState] = useState<boolean>(false);
   const [modalSelecaoMotorista, setModalSelecaoMotorista] = useState<boolean>(false);
-  const [modalNome, setModalNome] = useState<string>("");
+  const [modalDescricao, setModalDescricao] = useState<boolean>(false);
+
 
   const [campo_origem, setCampoOrigem] = useState<string>('');
   const [campo_id, setCampoId] = useState<number>(0);
   const [campo_destino, setCampoDestino] = useState<string>('');
+  const [descricaoMotorista, setDescricaoMotorista] = useState<string>('');
+  const [comentarioMotorista, setComentarioMotorista] = useState<string>('');
 
   const limparStates = (): void => {
     setCampoOrigem("");
@@ -44,7 +54,9 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
     <ModalContext.Provider value={{
        modalState, setModalState, limparStates, modalNome, setModalNome,
        campo_origem, setCampoOrigem, campo_id, setCampoId, campo_destino,
-       setCampoDestino, modalSelecaoMotorista, setModalSelecaoMotorista
+       setCampoDestino, modalSelecaoMotorista, setModalSelecaoMotorista,
+       modalDescricao, setModalDescricao, descricaoMotorista, setDescricaoMotorista,
+       comentarioMotorista, setComentarioMotorista
        }}>
         {children}
     </ModalContext.Provider>

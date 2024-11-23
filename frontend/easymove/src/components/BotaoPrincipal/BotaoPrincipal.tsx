@@ -15,7 +15,7 @@ function BotaoPrincipal({ texto, classe, handleShow }: BotaoPrincipalProps) {
             handleShow();
         }
         limparStates();
-        setModalNome("Solicitar");
+        setModalNome("Solicitar viagem");
     }
 
     const handleOnClick = (): void =>{

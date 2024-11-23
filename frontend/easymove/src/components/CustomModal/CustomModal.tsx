@@ -3,6 +3,7 @@ import ContentModalViagens from '../ContentModal/ContentModalViagens/ContentModa
 import { useModalContext } from '../../context/ModalContext';
 import Botao from '../Botao/Botao';
 import ContentModalSelecaoMotorista from '../ContentModal/ContentModalSelecaoMotorista/ContentModalSelecaoMotorista';
+import ContentModalInfoMotorista from '../ContentModal/ContentModalInfoMotorista/ContentModalInfoMotorista';
 
 interface CustomModalProps {
   nome_modal: string;
@@ -14,24 +15,28 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
 
   const { campo_origem, setCampoOrigem, limparStates,
     campo_id, setCampoId, campo_destino, setCampoDestino,
-    setModalNome, setModalState
+    setModalNome, setModalState, setModalSelecaoMotorista,
+    descricaoMotorista, comentarioMotorista
   } = useModalContext();
 
 
   const fecharModal = (): void => {
     handleClose();
-    if(nome_modal === "Confirmar viagem"){
-      setModalNome("Solicitar");
+    if (nome_modal === "Confirmar viagem") {
+      setModalNome("Solicitar viagem");
       setModalState(true);
+    }
+    if (nome_modal === "Descrição motorista" || nome_modal === "Comentário motorista") {
+      setModalNome("Confirmar viagem");
     }
     limparStates();
   }
 
 
   const validouCamposObrigatorios = (): boolean => {
-    if(campo_id === 0 || campo_origem === "" || campo_destino === ""){
-      return true;//alterar depois
-    }else{
+    if (campo_id === 0 || campo_origem === "" || campo_destino === "") {
+      return false;
+    } else {
       return true;
     }
   }
@@ -41,95 +46,112 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
 
     const campos_obrigatorios_preenchidos = validouCamposObrigatorios();
 
-    if(campos_obrigatorios_preenchidos){
-      setModalNome("Confirmar");
+    if (campos_obrigatorios_preenchidos) {
+      setModalNome("Confirmar viagem");
 
-      // async function obterValorViagem() {
-      //   const url = "https://localhost:8080/ride/estimate";
-  
-      //   try {
-      //     const response = await fetch(url, {
-      //       method: "POST",
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //       },
-      //       body: JSON.stringify({ campo_id, campo_origem, campo_destino }),
-      //     });
-  
-      //     if (!response.ok) {
-      //       throw new Error(`Response status: ${response.status}`);
-      //     }
-  
-      //     const valorViagem = await response.json();
-      //     console.log(valorViagem); // Resultado retornado pelo backend
-      //     if (valorViagem) {
-      //       setModalSelecaoMotorista(true);
-      //     }
-  
-      //   } catch (error: unknown) {
-      //     if (error instanceof Error) {
-      //       console.error(error.message);
-      //     } else {
-      //       console.error("Erro desconhecido:", error);
-      //     }
-      //   }
-      // }
-      // obterValorViagem();
+      async function obterValorViagem() {
+        const url = "https://localhost:8080/ride/estimate";
 
-    }else{
+        try {
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ campo_id, campo_origem, campo_destino }),
+          });
+
+          if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+          }
+
+          const valorViagem = await response.json();
+          console.log(valorViagem); // Resultado retornado pelo backend
+          if (valorViagem) {
+            setModalSelecaoMotorista(true);
+          }
+
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            console.error(error.message);
+          } else {
+            console.error("Erro desconhecido:", error);
+          }
+        }
+      }
+      obterValorViagem();
+
+    } else {
       alert("Favor preencher os campos corretamente")
     }
-
-
-
   };
 
 
-  const solicitarViagem = () => {
+  const confirmarViagem = () => {
 
   }
 
-  return (
-    <>
-      <Modal 
-        centered
-        show={show}
-        onHide={fecharModal}
-        // className={isTabelaModal ? "modal-com-tabela" : "modal-sem-tabela"}
-        >
-        <Modal.Header closeButton>
-          <Modal.Title>{nome_modal}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        {nome_modal === "Solicitar viagem" ? (
+  const renderModalContent = () => {
+    switch (nome_modal) {
+      case 'Solicitar viagem':
+        return (
           <>
-          <ContentModalViagens
+            <ContentModalViagens
               campo_origem={campo_origem}
               setCampoOrigem={setCampoOrigem}
               campo_id={campo_id}
               setCampoId={setCampoId}
               campo_destino={campo_destino}
               setCampoDestino={setCampoDestino}
-          />
-          <Botao handleOnClick={estimarValorViagem} texto={"Estimar"} />
+            />
+            <Botao handleOnClick={estimarValorViagem} texto={'Estimar'} />
           </>
-        ) : (
+        );
+      case 'Confirmar viagem':
+        return (
           <ContentModalSelecaoMotorista
-           campo_id={campo_id}
-           setCampoId={setCampoId}
+            campo_id={campo_id}
+            setCampoId={setCampoId}
           />
+        );
+      case 'Descrição motorista':
+        return(
+            <ContentModalInfoMotorista
+              nome_campo='Descrição'
+              conteudo={descricaoMotorista}
+            />
+        );
+      case 'Comentário motorista':
+        return(
+          <ContentModalInfoMotorista
+            nome_campo='Comentário'
+            conteudo={comentarioMotorista}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <Modal centered show={show} onHide={fecharModal}>
+      <Modal.Header closeButton>
+        <Modal.Title>{nome_modal}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>{renderModalContent()}</Modal.Body>
+      <Modal.Footer>
+        {nome_modal === 'Confirmar viagem' && (
+          <>
+            <Button variant="secondary" onClick={fecharModal}>
+              Cancelar
+            </Button>
+            <Button variant="primary" onClick={confirmarViagem}>
+              Confirmar
+            </Button>
+          </>
         )}
-        </Modal.Body>
-        <Modal.Footer>
-          {nome_modal ==="Confirmar viagem" &&
-            <>
-              <Button variant="secondary" onClick={fecharModal}>Cancelar</Button>
-              <Button variant="primary" onClick={solicitarViagem}>Confirmar</Button>
-            </>
-          }
-        </Modal.Footer>
-      </Modal>
-    </>
+      </Modal.Footer>
+    </Modal>
   );
 }
 
