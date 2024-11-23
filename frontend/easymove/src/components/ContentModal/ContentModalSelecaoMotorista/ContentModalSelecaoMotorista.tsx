@@ -56,13 +56,22 @@ const ContentModalSelecaoMotorista = ({}: ContentModalSelecaoMotoristaProps) => 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+
+  const exibirModalDescricao = () => {
+    
+  }
+
   const renderRow = (motorista: Motorista) => (
     <>
       <td>{motorista.nome}</td>
-      {!isMobile && <td>{motorista.descricao}</td>}
-      {/* transformar a descrição em um link q ao ser passado o mouse exiba o texto */}
+      {!isMobile &&
+        <td>
+          <a href="#" onClick={exibirModalDescricao}>Descrição</a>
+        </td>}
       {!isMobile && <td>{motorista.carro}</td>}
-      <td>{motorista.rating}</td>
+      <td>
+        <a href="">{motorista.rating}</a>
+        </td>
       <td>{motorista.taxa_km}</td>
       <td>
         <Action id={motorista.id}/>

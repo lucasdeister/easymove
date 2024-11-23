@@ -91,7 +91,12 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
 
   return (
     <>
-      <Modal centered show={show} onHide={fecharModal}>
+      <Modal 
+        centered
+        show={show}
+        onHide={fecharModal}
+        // className={isTabelaModal ? "modal-com-tabela" : "modal-sem-tabela"}
+        >
         <Modal.Header closeButton>
           <Modal.Title>{nome_modal}</Modal.Title>
         </Modal.Header>

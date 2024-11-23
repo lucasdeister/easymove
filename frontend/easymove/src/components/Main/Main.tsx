@@ -59,11 +59,11 @@ function Main() {
       <CustomModal
         nome_modal={modalNome + texto_viagem}
         handleClose={() => setModalState(false)}
-        show={modalState} />
+        show={modalState}/>
       <CustomModal
         nome_modal={modalNome + texto_viagem}
         handleClose={() => setModalSelecaoMotorista(false)}
-        show={modalSelecaoMotorista} />
+        show={modalSelecaoMotorista}/>
       {/* <Tabela columns={columns} data={historicoViagens} isMobile={isMobile} /> */}
     </main >
   )

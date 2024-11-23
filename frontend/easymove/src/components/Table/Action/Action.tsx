@@ -6,7 +6,7 @@ interface ActionProps {
 }
 
 
-const Action = ({ id } : ActionProps) => {
+const Action = ({ id }: ActionProps) => {
 
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 1000);
 
@@ -20,14 +20,17 @@ const Action = ({ id } : ActionProps) => {
     }, []);
 
     return (
-        <div className="dropdown">
-            <button
-                className="btn btn-outline-primary dropdown-toggle"
-                type="button"
-                id="dropdownMenuButton"
-                data-bs-toggle="dropdown"
-                aria-expanded="false">{isMobile ? <i className="bi bi-list"></i> : 'Selecione'}
-            </button>
+        <div className="btn-group" role="group" aria-label="Checkbox toggle buttons">
+            <input
+                type="radio"
+                className="btn-check"
+                id={`btn_check_${id}`}
+                autoComplete="off"
+                name="motorista-selecao"
+            />
+            <label className="btn btn-outline-primary" htmlFor={`btn_check_${id}`}>
+                Escolher
+            </label>
         </div>
     );
 };
