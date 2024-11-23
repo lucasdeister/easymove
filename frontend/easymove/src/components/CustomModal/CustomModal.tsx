@@ -46,11 +46,15 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
 
     const campos_obrigatorios_preenchidos = validouCamposObrigatorios();
 
+    const customer_id = campo_id.toString();
+    const origin = campo_origem;
+    const destination = campo_destino;
+
     if (campos_obrigatorios_preenchidos) {
       setModalNome("Confirmar viagem");
 
       async function obterValorViagem() {
-        const url = "https://localhost:8080/ride/estimate";
+        const url = "http://localhost:8080/ride/estimate";
 
         try {
           const response = await fetch(url, {
@@ -58,7 +62,7 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ campo_id, campo_origem, campo_destino }),
+            body: JSON.stringify({ customer_id, origin, destination }),
           });
 
           if (!response.ok) {
