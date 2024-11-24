@@ -38,14 +38,14 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
 
 
   const [campo_origem, setCampoOrigem] = useState<string>('');
-  const [campo_id, setCampoId] = useState<number>(0);
+  const [campo_id, setCampoId] = useState<number>(1);
   const [campo_destino, setCampoDestino] = useState<string>('');
   const [descricaoMotorista, setDescricaoMotorista] = useState<string>('');
   const [comentarioMotorista, setComentarioMotorista] = useState<string>('');
 
   const limparStates = (): void => {
     setCampoOrigem("");
-    setCampoId(0);
+    setCampoId(1);
     setCampoDestino("");
   };
 

@@ -21,11 +21,11 @@ function ContentModalViagens({
   return (
     <form>
       <Campo nome={"Id"} tipo={"number"} value={campo_id.toString()}
-        onChange={(e) => setCampoId(parseInt(e.target.value))} />
+        onChange={(e) => setCampoId(parseInt(e.target.value))}/>
       <Campo nome={"Origem"} tipo={"text"} value={campo_origem}
-        onChange={(e) => setCampoOrigem(e.target.value)} />
+        onChange={(e) => setCampoOrigem(e.target.value)}/>
       <Campo nome={"Destino"} tipo={"text"} value={campo_destino}
-        onChange={(e) => setCampoDestino(e.target.value)} />
+       onChange={(e) => setCampoDestino(e.target.value)}/>
     </form>
   );
 }
