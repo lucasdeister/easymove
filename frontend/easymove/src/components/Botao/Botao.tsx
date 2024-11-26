@@ -9,7 +9,7 @@ function Botao({ handleOnClick, texto }: BotaoProps) {
 
     return (
         <div className={styles.container_botao}>
-            <button className={styles.botao} onClick={handleOnClick}>{texto}</button>
+            <button type="submit" className={styles.botao} onClick={handleOnClick}>{texto}</button>
         </div>
     )
 }

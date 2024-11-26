@@ -5,6 +5,7 @@ import Botao from '../Botao/Botao';
 import ContentModalSelecaoMotorista from '../ContentModal/ContentModalSelecaoMotorista/ContentModalSelecaoMotorista';
 import ContentModalInfoMotorista from '../ContentModal/ContentModalInfoMotorista/ContentModalInfoMotorista';
 
+
 interface CustomModalProps {
   nome_modal: string;
   show: boolean;
@@ -16,7 +17,8 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
   const { campo_origem, setCampoOrigem, limparStates,
     campo_id, setCampoId, campo_destino, setCampoDestino,
     setModalNome, setModalState, setModalSelecaoMotorista,
-    descricaoMotorista, comentarioMotorista
+    descricaoMotorista, comentarioMotorista, setIdMotoristaSelecionado,
+    calcularRota, limparRota, setOriginLocation
   } = useModalContext();
 
 
@@ -25,6 +27,8 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
     if (nome_modal === "Confirmar viagem") {
       setModalNome("Solicitar viagem");
       setModalState(true);
+      setIdMotoristaSelecionado(0);
+      limparRota();
     }
     if (nome_modal === "Descrição motorista" || nome_modal === "Comentário motorista") {
       setModalNome("Confirmar viagem");
@@ -51,7 +55,6 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
     const destination = campo_destino;
 
     if (campos_obrigatorios_preenchidos) {
-      setModalNome("Confirmar viagem");
 
       async function obterValorViagem() {
         const url = "http://localhost:8080/ride/estimate";
@@ -69,10 +72,17 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
             throw new Error(`Response status: ${response.status}`);
           }
 
-          const valorViagem = await response.json();
-          console.log(valorViagem); // Resultado retornado pelo backend
-          if (valorViagem) {
+          const data = await response.json();
+
+          console.log(JSON.stringify(data));
+
+          if (data) {
+            setOriginLocation(
+              { lat: data.origin.latitude, lng: data.origin.longitude }
+            )
             setModalSelecaoMotorista(true);
+            setModalNome("Confirmar viagem");
+            calcularRota();
           }
 
         } catch (error: unknown) {

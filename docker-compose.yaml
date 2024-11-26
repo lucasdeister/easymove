@@ -1,0 +1,32 @@
+version: "3.9"
+networks:
+  easymove: 
+    external: true
+
+services:
+  database:
+    build: ./bd
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: '2606'
+    ports:
+      - "5432:5432"
+    networks:
+      - easymove
+    container_name: database_server
+
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    networks:
+      - easymove
+    container_name: backend_server
+  
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    networks:
+      - easymove
+    container_name: frontend_server

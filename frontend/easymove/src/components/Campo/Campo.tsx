@@ -1,6 +1,8 @@
 import React from 'react';
 import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
 
+import { useModalContext } from '../../context/ModalContext';
+
 interface CampoProps {
   nome: string;
   tipo: string;
@@ -9,6 +11,9 @@ interface CampoProps {
 }
 
 function Campo({ nome, tipo, value, onChange }: CampoProps) {
+
+  const { originRef, destinationRef } = useModalContext();
+
   if (!import.meta.env.VITE_GOOGLE_MAPS_API_KEY) {
     throw new Error("A chave da API do Google Maps não foi definida.");
   }
@@ -18,6 +23,7 @@ function Campo({ nome, tipo, value, onChange }: CampoProps) {
     libraries: ['places'],
   });
 
+  const ref = nome === "Origem" ? originRef : nome === "Destino" ? destinationRef : null;
 
   return (
     <div className="form-group mt-3">
@@ -33,6 +39,7 @@ function Campo({ nome, tipo, value, onChange }: CampoProps) {
             placeholder={nome}
             onChange={onChange}
             onBlur={onChange}
+            ref={ref}
             required
           />
         </Autocomplete>

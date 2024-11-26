@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Motorista from "../../types/IMotorista";
 import Action from "../../Table/Action/Action";
 import { useModalContext } from "../../../context/ModalContext";
-import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api"
+import { useJsApiLoader, GoogleMap, Marker,DirectionsRenderer, Libraries } from "@react-google-maps/api"
 
 interface ContentModalSelecaoMotoristaProps {
   campo_id: number;
@@ -15,23 +15,19 @@ interface ContentModalSelecaoMotoristaProps {
 const ContentModalSelecaoMotorista = ({ }: ContentModalSelecaoMotoristaProps) => {
 
   const { setModalNome, setDescricaoMotorista,
-    setModalDescricao, setComentarioMotorista } = useModalContext();
-
-
-  const [map, setMap] = useState<google.maps.Map | null>(null);
+    setModalDescricao, setComentarioMotorista,
+    directionsResponse, distance, duration, originLocation } = useModalContext();
 
   if (!import.meta.env.VITE_GOOGLE_MAPS_API_KEY) {
     throw new Error("A chave da API do Google Maps não foi definida.");
   }
 
+  const libraries: Libraries = ['places'];
+
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "",
-    libraries: ['places'],
+    libraries: libraries,
   });
-
-  if (!isLoaded) {
-    console.log("Ainda esta carregando...");
-  }
 
   const motoristas = [
     {
@@ -109,29 +105,33 @@ const ContentModalSelecaoMotorista = ({ }: ContentModalSelecaoMotoristaProps) =>
     </>
   );
 
-  const location = { lat: 48.8584, lng: 2.2945 }
-
+  // const location = { lat: 48.8584, lng: 2.2945 }
 
   return (
     <form>
       <div className={styles.container_mapa}>
         {isLoaded ? (
           <GoogleMap
-            center={location}
+            center={originLocation}
             zoom={15}
             mapContainerStyle={{ width: "100%", height: "100%" }}
-            onLoad={(mapInstance) => setMap(mapInstance)}
           >
-            <Marker position={location}/>
+            <Marker position={originLocation}/>
+            {directionsResponse && (
+              <DirectionsRenderer directions={directionsResponse}/>
+            )}
           </GoogleMap>
         ) : (
           <div>Carregando mapa...</div>
         )}
+        <div className={styles.container_infos}>
+          <p>Distância: {distance}</p>
+          <p>Duração: {duration}</p>
+        </div>
       </div>
       <Table
         columns={isMobile ? columnsMobile : columnsDesktop}
         data={motoristas} renderRow={renderRow} />
-        <button className="btn btn-primary" onClick={() => map?.panTo(location)}>centralizar mapa</button>
     </form>
   )
 }

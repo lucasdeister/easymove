@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgres://postgres:123@localhost:5432/easymove"
+  //"postgres://postgres:123@database_server:5432/easymove" //para rodar no docker
+}
+
+model motorista {
+  id        Int     @id @default(autoincrement())
+  nome      String
+  descricao String
+  carro     String
+  rating    Int
+  comment   String?
+  taxaPorKm Float
+  kmMinimo  Float
+}
+
+model historico_viagem {
+  id          Int      @id @default(autoincrement())
+  date        DateTime @default(now())
+  customerId  Int
+  origin      String
+  destination String
+  distance    Int
+  duration    String
+  driverId    Int
+  driverName  String
+  value       Float
+}
