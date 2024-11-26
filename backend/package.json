@@ -7,15 +7,18 @@
     "dev": "ts-node-dev --respawn src/server.ts",
     "build": "tsc"
   },
-  "exports": {"./routes/rideRoutes": "./dist/routes/rideRoutes.js",
-"./controllers/rideController": "./dist/controllers/rideController.js",
- "./controllers/dbController": "./dist/controllers/dbController.js"},
+  "exports": {
+    "./routes/rideRoutes": "./dist/routes/rideRoutes.js",
+    "./controllers/rideController": "./dist/controllers/rideController.js",
+    "./controllers/dbController": "./dist/controllers/dbController.js"
+  },
   "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@googlemaps/google-maps-services-js": "^3.4.0",
     "@mapbox/polyline": "^1.2.1",
     "@prisma/client": "^5.22.0",
     "@types/cors": "^2.8.17",

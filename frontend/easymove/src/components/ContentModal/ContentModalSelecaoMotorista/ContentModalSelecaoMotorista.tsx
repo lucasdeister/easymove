@@ -112,7 +112,7 @@ const ContentModalSelecaoMotorista = ({ }: ContentModalSelecaoMotoristaProps) =>
       <div className={styles.container_mapa}>
         {isLoaded ? (
           <GoogleMap
-            center={originLocation}
+            // center={originLocation}
             zoom={15}
             mapContainerStyle={{ width: "100%", height: "100%" }}
           >
@@ -125,8 +125,8 @@ const ContentModalSelecaoMotorista = ({ }: ContentModalSelecaoMotoristaProps) =>
           <div>Carregando mapa...</div>
         )}
         <div className={styles.container_infos}>
-          <p>Distância: {distance}</p>
-          <p>Duração: {duration}</p>
+          <p className="me-1">Distância: {distance}</p>
+          <p className="me-1">Duração: {duration}</p>
         </div>
       </div>
       <Table

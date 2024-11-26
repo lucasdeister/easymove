@@ -33,6 +33,7 @@ interface ModalContextProps {
   setDistance: (distancia: string) => void;
   setDuration: (duracao: string) => void;
   setOriginLocation: (location: Location) => void;
+  setDirectionsResponse: (resposta: any) => void;
 }
 
 interface Location{
@@ -113,8 +114,6 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
       });
 
       setDirectionsResponse(results);
-      setDistance(results.routes[0].legs[0].distance?.text ?? 'Não disponível');
-      setDuration(results.routes[0].legs[0].duration?.text ?? 'Não disponível');
 
     } catch (error) {
       console.error("Erro ao calcular rota:", error);
@@ -131,7 +130,7 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
       comentarioMotorista, setComentarioMotorista, idMotoristaSelecionado,
       setIdMotoristaSelecionado, originRef, destinationRef, calcularRota, limparRota,
       directionsResponse, distance, duration, setDistance, setDuration, originLocation,
-      setOriginLocation
+      setOriginLocation, setDirectionsResponse
     }}>
       {children}
     </ModalContext.Provider>

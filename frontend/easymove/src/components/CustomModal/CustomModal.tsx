@@ -18,7 +18,7 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
     campo_id, setCampoId, campo_destino, setCampoDestino,
     setModalNome, setModalState, setModalSelecaoMotorista,
     descricaoMotorista, comentarioMotorista, setIdMotoristaSelecionado,
-    calcularRota, limparRota, setOriginLocation
+    limparRota, setOriginLocation, setDistance, setDuration, calcularRota, setDirectionsResponse
   } = useModalContext();
 
 
@@ -78,11 +78,12 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
 
           if (data) {
             setOriginLocation(
-              { lat: data.origin.latitude, lng: data.origin.longitude }
-            )
-            setModalSelecaoMotorista(true);
-            setModalNome("Confirmar viagem");
-            calcularRota();
+              { lat: data.origin.latitude, lng: data.origin.longitude })
+              setDistance(data.routeResponse.routes[0].localizedValues.distance?.text);
+              setDuration(data.routeResponse.routes[0].localizedValues.duration?.text);
+              calcularRota();
+              setModalSelecaoMotorista(true);
+              setModalNome("Confirmar viagem");
           }
 
         } catch (error: unknown) {

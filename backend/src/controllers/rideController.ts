@@ -1,5 +1,6 @@
 import axios from "../../node_modules/axios/index.js";
 import dbController from "./dbController.js";
+import { GoogleRoutesResponse } from "../../src/types/IResposta.js";
 
 const API_KEY = "AIzaSyBhZVwamaETSI7LaUQCbvpiQcsCs8fAFV0";
 const BASE_URL = "https://routes.googleapis.com/directions/v2:computeRoutes";
@@ -16,19 +17,12 @@ interface Driver {
   kmMinimo?: number;
 }
 
-interface RouteResponse {
-  distanceMeters: number;
-  duration: string;
-  startLocation: { latLng: { latitude: number; longitude: number } };
-  endLocation: { latLng: { latitude: number; longitude: number } };
-}
-
 interface TravelData {
   origin: { latitude: number; longitude: number };
   destination: { latitude: number; longitude: number };
   distancia: number;
   tempo: string;
-  routeResponse: RouteResponse;
+  routeResponse: GoogleRoutesResponse;
 }
 
 class Option {
@@ -68,7 +62,7 @@ async function salvarRide(
   value: number
 ) {
   return await dbController.saveRide(
-    customer_id, origin, destination, distance, duration, {id: driver.id, nome: driver.name}, value
+    customer_id, origin, destination, distance, duration, { id: driver.id, nome: driver.name }, value
   );
 }
 
@@ -113,28 +107,31 @@ async function calcularEstimativa(origin: string, destination: string) {
   };
 }
 
-async function getGoogleRoute(origin: string, destination: string): Promise<RouteResponse | undefined> {
+
+async function getGoogleRoute(origin: string, destination: string): Promise<GoogleRoutesResponse>{
+
   try {
     const response = await axios.post(
       BASE_URL,
       {
-        origin: { address: origin },
-        destination: { address: destination },
-        travelMode: "DRIVE",
-        polylineEncoding: "GEO_JSON_LINESTRING",
+          origin: { address: origin },
+          destination: { address: destination },
+          travelMode: "DRIVE"
       },
       {
-        headers: {
-          "Content-Type": "application/json",
-          "X-Goog-Api-Key": API_KEY,
-          "X-Goog-FieldMask": "routes.legs.duration,routes.legs.distanceMeters,routes.legs.startLocation,routes.legs.endLocation",
-        },
+          headers: {
+              "Content-Type": "application/json",
+              "X-Goog-Api-Key": API_KEY,
+              "X-Goog-FieldMask": "routes",
+          },
       }
-    );
+  );
 
-    return response.data.routes[0].legs[0];
+    return response.data;
+
   } catch (error: any) {
     console.error("Google route request error:", error.response?.data || error.message);
+    return error;
   }
 }
 
@@ -142,22 +139,19 @@ async function getTravel(origin: string, destination: string): Promise<TravelDat
   const route = await getGoogleRoute(origin, destination);
   if (!route) throw new Error("Route not found");
 
+  const tempo = route.routes[0].legs[0].duration;
+  const distancia = route.routes[0].legs[0].distanceMeters;
+
   const coordOrigin = {
-    latitude: route.startLocation.latLng.latitude,
-    longitude: route.startLocation.latLng.longitude,
+    latitude: route.routes[0].legs[0].startLocation.latLng.latitude,
+    longitude: route.routes[0].legs[0].startLocation.latLng.longitude
   };
   const coordDestination = {
-    latitude: route.endLocation.latLng.latitude,
-    longitude: route.endLocation.latLng.longitude,
+    latitude: route.routes[0].legs[0].endLocation.latLng.latitude,
+    longitude: route.routes[0].legs[0].endLocation.latLng.longitude
   };
 
-  return {
-    origin: coordOrigin,
-    destination: coordDestination,
-    distancia: route.distanceMeters,
-    tempo: route.duration,
-    routeResponse: route,
-  };
+  return { origin: coordOrigin, destination: coordDestination, distancia, tempo, routeResponse: route };
 }
 
 async function getMotorista(id_driver: number, nome_driver: string) {
@@ -208,7 +202,7 @@ async function confirmRouteValidations(
   return successResponse;
 }
 
-export default{
+export default {
   calcularEstimativa,
   salvarRide,
   confirmRouteValidations,

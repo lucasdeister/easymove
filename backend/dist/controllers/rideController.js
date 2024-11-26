@@ -64,19 +64,19 @@ function getGoogleRoute(origin, destination) {
             const response = yield axios.post(BASE_URL, {
                 origin: { address: origin },
                 destination: { address: destination },
-                travelMode: "DRIVE",
-                polylineEncoding: "GEO_JSON_LINESTRING",
+                travelMode: "DRIVE"
             }, {
                 headers: {
                     "Content-Type": "application/json",
                     "X-Goog-Api-Key": API_KEY,
-                    "X-Goog-FieldMask": "routes.legs.duration,routes.legs.distanceMeters,routes.legs.startLocation,routes.legs.endLocation",
+                    "X-Goog-FieldMask": "routes",
                 },
             });
-            return response.data.routes[0].legs[0];
+            return response.data;
         }
         catch (error) {
             console.error("Google route request error:", ((_a = error.response) === null || _a === void 0 ? void 0 : _a.data) || error.message);
+            return error;
         }
     });
 }
@@ -85,21 +85,17 @@ function getTravel(origin, destination) {
         const route = yield getGoogleRoute(origin, destination);
         if (!route)
             throw new Error("Route not found");
+        const tempo = route.routes[0].legs[0].duration;
+        const distancia = route.routes[0].legs[0].distanceMeters;
         const coordOrigin = {
-            latitude: route.startLocation.latLng.latitude,
-            longitude: route.startLocation.latLng.longitude,
+            latitude: route.routes[0].legs[0].startLocation.latLng.latitude,
+            longitude: route.routes[0].legs[0].startLocation.latLng.longitude
         };
         const coordDestination = {
-            latitude: route.endLocation.latLng.latitude,
-            longitude: route.endLocation.latLng.longitude,
+            latitude: route.routes[0].legs[0].endLocation.latLng.latitude,
+            longitude: route.routes[0].legs[0].endLocation.latLng.longitude
         };
-        return {
-            origin: coordOrigin,
-            destination: coordDestination,
-            distancia: route.distanceMeters,
-            tempo: route.duration,
-            routeResponse: route,
-        };
+        return { origin: coordOrigin, destination: coordDestination, distancia, tempo, routeResponse: route };
     });
 }
 function getMotorista(id_driver, nome_driver) {
