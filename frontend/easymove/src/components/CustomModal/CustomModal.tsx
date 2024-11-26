@@ -5,7 +5,6 @@ import Botao from '../Botao/Botao';
 import ContentModalSelecaoMotorista from '../ContentModal/ContentModalSelecaoMotorista/ContentModalSelecaoMotorista';
 import ContentModalInfoMotorista from '../ContentModal/ContentModalInfoMotorista/ContentModalInfoMotorista';
 
-
 interface CustomModalProps {
   nome_modal: string;
   show: boolean;
@@ -18,7 +17,8 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
     campo_id, setCampoId, campo_destino, setCampoDestino,
     setModalNome, setModalState, setModalSelecaoMotorista,
     descricaoMotorista, comentarioMotorista, setIdMotoristaSelecionado,
-    limparRota, setOriginLocation, setDistance, setDuration, calcularRota, setDirectionsResponse
+    limparRota, setOriginLocation, setDistance, setDuration, calcularRota,
+    motoristas, setMotoristas
   } = useModalContext();
 
 
@@ -44,7 +44,6 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
       return true;
     }
   }
-
 
   const estimarValorViagem = (): void => {
 
@@ -74,18 +73,16 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
 
           const data = await response.json();
 
-          console.log(JSON.stringify(data));
-
           if (data) {
+            setMotoristas(data.options);
             setOriginLocation(
               { lat: data.origin.latitude, lng: data.origin.longitude })
-              setDistance(data.routeResponse.routes[0].localizedValues.distance?.text);
-              setDuration(data.routeResponse.routes[0].localizedValues.duration?.text);
-              calcularRota();
-              setModalSelecaoMotorista(true);
-              setModalNome("Confirmar viagem");
+            setDistance(data.routeResponse.routes[0].localizedValues.distance?.text);
+            setDuration(data.routeResponse.routes[0].localizedValues.duration?.text);
+            calcularRota();
+            setModalSelecaoMotorista(true);
+            setModalNome("Confirmar viagem");
           }
-
         } catch (error: unknown) {
           if (error instanceof Error) {
             console.error(error.message);
@@ -95,7 +92,6 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
         }
       }
       obterValorViagem();
-
     } else {
       alert("Favor preencher os campos corretamente")
     }
@@ -105,6 +101,8 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
   const confirmarViagem = () => {
 
   }
+
+
 
   const renderModalContent = () => {
     switch (nome_modal) {
@@ -125,8 +123,7 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
       case 'Confirmar viagem':
         return (
           <ContentModalSelecaoMotorista
-            campo_id={campo_id}
-            setCampoId={setCampoId}
+            motoristas={motoristas}
           />
         );
       case 'Descrição motorista':

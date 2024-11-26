@@ -8,15 +8,15 @@ import { useModalContext } from "../../../context/ModalContext";
 import { useJsApiLoader, GoogleMap, Marker,DirectionsRenderer, Libraries } from "@react-google-maps/api"
 
 interface ContentModalSelecaoMotoristaProps {
-  campo_id: number;
-  setCampoId: (campo_id: number) => void;
+  motoristas: Motorista[];
 }
 
-const ContentModalSelecaoMotorista = ({ }: ContentModalSelecaoMotoristaProps) => {
+const ContentModalSelecaoMotorista = ({ motoristas }: ContentModalSelecaoMotoristaProps) => {
 
   const { setModalNome, setDescricaoMotorista,
     setModalDescricao, setComentarioMotorista,
-    directionsResponse, distance, duration, originLocation } = useModalContext();
+    directionsResponse, distance, duration, originLocation
+   } = useModalContext();
 
   if (!import.meta.env.VITE_GOOGLE_MAPS_API_KEY) {
     throw new Error("A chave da API do Google Maps não foi definida.");
@@ -28,39 +28,6 @@ const ContentModalSelecaoMotorista = ({ }: ContentModalSelecaoMotoristaProps) =>
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "",
     libraries: libraries,
   });
-
-  const motoristas = [
-    {
-      id: 1,
-      nome: "Homer Simpson",
-      descricao: "Olá! Sou o Homer, seu motorista camarada! Relaxe e aproveite o passeio, com direito a rosquinhas e boas risadas (e talvez alguns desvios).",
-      carro: "Plymouth Valiant 1973 rosa e enferrujado",
-      rating: "2/5",
-      comment: "Motorista simpático, mas errou o caminho 3 vezes. O carro cheira a donuts.",
-      taxa_km: 2.5,
-      km_minimo: 1,
-    },
-    {
-      id: 2,
-      nome: "Dominic Toretto",
-      descricao: "Ei, aqui é o Dom. Pode entrar, vou te levar com segurança e rapidez ao seu destino. Só não mexa no rádio, a playlist é sagrada.",
-      carro: "Dodge Charger R/T 1970 modificado",
-      rating: "4/5",
-      comment: "Que viagem incrível! O carro é um show à parte e o motorista, apesar de ter uma cara de poucos amigos, foi super gente boa. Recomendo!",
-      taxa_km: 5.0,
-      km_minimo: 5,
-    },
-    {
-      id: 3,
-      nome: "James Bond",
-      descricao: "Boa noite, sou James Bond. À seu dispor para um passeio suave e discreto. Aperte o cinto e aproveite a viagem.",
-      carro: "Aston Martin DB5 clássico",
-      rating: "5/5",
-      comment: "Serviço impecável! O motorista é a própria definição de classe e o carro é simplesmente magnífico. Uma experiência digna de um agente secreto.",
-      taxa_km: 10.0,
-      km_minimo: 10,
-    },
-  ];
 
   const columnsDesktop = ["Nome", "Descrição", "Veículo", "Avaliação", "Valor", "Seleção"];
   const columnsMobile = ["Nome", "Avaliação", "Valor", "Seleção"];
@@ -76,43 +43,41 @@ const ContentModalSelecaoMotorista = ({ }: ContentModalSelecaoMotoristaProps) =>
 
   const exibirModalDescricao = (motorista: Motorista) => {
     setModalNome("Descrição motorista");
-    setDescricaoMotorista(motorista.descricao);
+    setDescricaoMotorista(motorista.description);
     setModalDescricao(true);
   }
 
 
   const exibirModalComentario = (motorista: Motorista) => {
     setModalNome("Comentário motorista");
-    setComentarioMotorista(motorista.comment);
+    setComentarioMotorista(motorista.review.comment);
     setModalDescricao(true);
   }
 
   const renderRow = (motorista: Motorista) => (
     <>
-      <td>{motorista.nome}</td>
+      <td>{motorista.name}</td>
       {!isMobile &&
         <td>
           <a href="#" onClick={() => exibirModalDescricao(motorista)}>Descrição</a>
         </td>}
-      {!isMobile && <td>{motorista.carro}</td>}
+      {!isMobile && <td>{motorista.vehicle}</td>}
       <td>
-        <a href="#" onClick={() => exibirModalComentario(motorista)}>{motorista.rating}</a>
+        <a href="#" onClick={() => exibirModalComentario(motorista)}>{motorista.review.rating}</a>
       </td>
-      <td>{motorista.taxa_km}</td>
+      <td>{motorista.value.toFixed(2)}</td>
       <td>
         <Action id={motorista.id} />
       </td>
     </>
   );
 
-  // const location = { lat: 48.8584, lng: 2.2945 }
-
   return (
     <form>
       <div className={styles.container_mapa}>
         {isLoaded ? (
           <GoogleMap
-            // center={originLocation}
+            center={originLocation}
             zoom={15}
             mapContainerStyle={{ width: "100%", height: "100%" }}
           >

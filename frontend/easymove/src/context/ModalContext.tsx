@@ -1,4 +1,5 @@
 import { createContext, useState, useContext, ReactNode, useRef } from "react";
+import Motorista from "../components/types/IMotorista";
 
 interface ModalContextProps {
   modalState: boolean;
@@ -17,6 +18,7 @@ interface ModalContextProps {
   distance: string;
   duration: string;
   originLocation: Location;
+  motoristas: Motorista[];
   setCampoOrigem: (campo_origem: string) => void;
   setCampoId: (campo_id: number) => void;
   setCampoDestino: (campo_destino: string) => void;
@@ -34,6 +36,7 @@ interface ModalContextProps {
   setDuration: (duracao: string) => void;
   setOriginLocation: (location: Location) => void;
   setDirectionsResponse: (resposta: any) => void;
+  setMotoristas: (motoristas: Motorista[]) => void;
 }
 
 interface Location{
@@ -68,6 +71,8 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
   const [duration, setDuration] = useState('');
   const [originLocation, setOriginLocation] = useState<Location>({ lat: 0, lng: 0 });
 
+  const [motoristas, setMotoristas] = useState<Motorista[]>([]);
+
   /** @type React.MutableRefObject<HTMLInputElement> */
   const originRef = useRef<HTMLInputElement>(null);
   /** @type React.MutableRefObject<HTMLInputElement> */
@@ -94,27 +99,30 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
   }
 
   async function calcularRota() {
-
-    if (
-      !originRef.current ||
-      !destinationRef.current ||
-      originRef.current.value === "" ||
-      destinationRef.current.value === ""
-    ) {
-      return;
-    }
-
+  
     const DirectionsService = new google.maps.DirectionsService();
 
+    if (!originRef.current || !destinationRef.current) {
+      return;
+    }
+  
     try {
       const results = await DirectionsService.route({
-        origin: originRef.current.value,
+        origin: originRef.current.value, 
         destination: destinationRef.current.value,
         travelMode: google.maps.TravelMode.DRIVING,
       });
-
+  
       setDirectionsResponse(results);
+  
+      // const rota = [
+      //   { origin: origem, destination: destino }
+      // ];
+  
+      // localStorage.setItem("rota", JSON.stringify(rota));
 
+      // console.log(JSON.stringify(directionsResponse));
+  
     } catch (error) {
       console.error("Erro ao calcular rota:", error);
     }
@@ -130,7 +138,7 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
       comentarioMotorista, setComentarioMotorista, idMotoristaSelecionado,
       setIdMotoristaSelecionado, originRef, destinationRef, calcularRota, limparRota,
       directionsResponse, distance, duration, setDistance, setDuration, originLocation,
-      setOriginLocation, setDirectionsResponse
+      setOriginLocation, setDirectionsResponse, motoristas, setMotoristas
     }}>
       {children}
     </ModalContext.Provider>

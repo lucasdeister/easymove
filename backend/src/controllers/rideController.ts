@@ -1,9 +1,13 @@
 import axios from "../../node_modules/axios/index.js";
 import dbController from "./dbController.js";
 import { GoogleRoutesResponse } from "../../src/types/IResposta.js";
+// import dotenv from '../../node_modules/dotenv/config.js';
+import dotenv from "../../node_modules/dotenv/lib/main.js"
 
-const API_KEY = "AIzaSyBhZVwamaETSI7LaUQCbvpiQcsCs8fAFV0";
-const BASE_URL = "https://routes.googleapis.com/directions/v2:computeRoutes";
+dotenv.config();
+
+const API_KEY = process.env.GOOGLE_API_KEY;
+const BASE_URL = process.env.BASE_URL;
 
 // Interfaces para tipos
 interface Driver {
@@ -112,7 +116,7 @@ async function getGoogleRoute(origin: string, destination: string): Promise<Goog
 
   try {
     const response = await axios.post(
-      BASE_URL,
+      BASE_URL!,
       {
           origin: { address: origin },
           destination: { address: destination },

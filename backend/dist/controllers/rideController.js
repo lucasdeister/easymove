@@ -9,8 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import axios from "../../node_modules/axios/index.js";
 import dbController from "./dbController.js";
-const API_KEY = "AIzaSyBhZVwamaETSI7LaUQCbvpiQcsCs8fAFV0";
-const BASE_URL = "https://routes.googleapis.com/directions/v2:computeRoutes";
+// import dotenv from '../../node_modules/dotenv/config.js';
+import dotenv from "../../node_modules/dotenv/lib/main.js";
+dotenv.config();
+const API_KEY = process.env.GOOGLE_API_KEY;
+const BASE_URL = process.env.BASE_URL;
 class Option {
     constructor(id, name, description, vehicle, rating, comment, value) {
         this.id = id;

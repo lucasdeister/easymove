@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Campo from "../../Campo/Campo";
 
 interface ContentModalViagensProps {
@@ -18,12 +19,14 @@ function ContentModalViagens({
   setCampoDestino,
 }: ContentModalViagensProps) {
 
+  useEffect(() => {  
+    localStorage.removeItem("rota");
+  }, []);
   return (
     <form>
       <Campo nome={"Id"} tipo={"number"} value={campo_id.toString()}
         onChange={(e) => setCampoId(parseInt(e.target.value))} />
-
-
+        
       <Campo 
           nome={"Origem"}
           tipo={"text"}
