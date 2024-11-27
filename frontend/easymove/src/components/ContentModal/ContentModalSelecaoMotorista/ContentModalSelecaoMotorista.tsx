@@ -63,11 +63,12 @@ const ContentModalSelecaoMotorista = ({ motoristas }: ContentModalSelecaoMotoris
         </td>}
       {!isMobile && <td>{motorista.vehicle}</td>}
       <td>
-        <a href="#" onClick={() => exibirModalComentario(motorista)}>{motorista.review.rating}</a>
+        <a href="#" onClick={() => exibirModalComentario(motorista)}>{motorista.review.rating}/5</a>
       </td>
-      <td>{motorista.value.toFixed(2)}</td>
+      <td>R$ {motorista.value.toFixed(2).replace(".", ",")}</td>
       <td>
         <ActionSelecionar id={motorista.id}/>
+        {/* aqui */}
       </td>
     </>
   );

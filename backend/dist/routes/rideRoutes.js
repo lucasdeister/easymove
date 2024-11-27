@@ -26,6 +26,7 @@ routes.post("/estimate", (req, res) => __awaiter(void 0, void 0, void 0, functio
 // Confirmar ride
 routes.post("/confirm", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { customer_id, origin, destination, distance, duration, driver, value } = req.body;
+    console.log(req.body);
     const validationResult = yield rideController.confirmRouteValidations(customer_id, origin, destination, distance, driver);
     if (validationResult.statusCode === 200) {
         yield rideController.salvarRide(customer_id, origin, destination, distance, duration, driver, value);

@@ -18,7 +18,7 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
     setModalNome, setModalState, setModalSelecaoMotorista,
     descricaoMotorista, comentarioMotorista, setIdMotoristaSelecionado,
     limparRota, setOriginLocation, setDistance, setDuration, calcularRota,
-    motoristas, setMotoristas
+    motoristas, setMotoristas, idMotoristaSelecionado, duration, distance
   } = useModalContext();
 
 
@@ -98,11 +98,63 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
   };
 
 
-  const confirmarViagem = (): void => {
+  const handleConfirmar = (): void => {
 
+
+    if(idMotoristaSelecionado > 0){
+
+      async function confirmarViagem() {
+        const url = "http://localhost:8080/ride/confirm";
+
+        const objViagem = {
+          customer_id: campo_id,
+          origin: campo_origem,
+          destination: campo_destino,
+          distance: parseFloat(distance.slice(0, -3).replace(",", ".")),
+          duration: duration,
+          driver:{
+            id: idMotoristaSelecionado,
+            name: motoristas.find((u) => u.id === idMotoristaSelecionado)?.name
+          },
+          value: motoristas.find((u) => u.id === idMotoristaSelecionado)?.value
+        }
+
+        console.log(objViagem);
+
+        try {
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(objViagem),
+          });
+
+          if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+          }
+
+          const data = await response.json();
+
+          if (data) {
+            alert("Viagem confirmada com sucesso!");
+            fecharModal();
+            setModalState(false);
+            setModalNome("");
+          }
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            console.error(error.message);
+          } else {
+            console.error("Erro desconhecido:", error);
+          }
+        }
+      }
+      confirmarViagem();
+    }else{
+      alert("Favor selecione um motorista para continuar")
+    }
   }
-
-
 
   const renderModalContent = () => {
     switch (nome_modal) {
@@ -157,7 +209,7 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
             <Button variant="secondary" onClick={fecharModal}>
               Cancelar
             </Button>
-            <Button variant="primary" onClick={confirmarViagem}>
+            <Button variant="primary" onClick={handleConfirmar}>
               Confirmar
             </Button>
           </>

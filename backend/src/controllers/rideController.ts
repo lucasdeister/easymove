@@ -190,6 +190,7 @@ async function confirmRouteValidations(
   distance: number,
   driver: Driver
 ) {
+
   if (!origin || !destination || !customer_id || origin === destination) {
     return invalidDataResponse;
   }

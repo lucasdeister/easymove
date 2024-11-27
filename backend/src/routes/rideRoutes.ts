@@ -58,6 +58,8 @@ routes.post("/confirm", async (req: Request, res: Response) => {
   const { customer_id, origin, destination, distance, duration, driver, value } =
     req.body as ConfirmRequestBody;
 
+  console.log(req.body);
+
   const validationResult = await rideController.confirmRouteValidations(
     customer_id,
     origin,

@@ -5,7 +5,6 @@ import CustomModal from "../CustomModal/CustomModal";
 import Table from "../Table/Table";
 import { useModalContext } from "../../context/ModalContext";
 import HistoricoViagens from "../types/IHistoricoViagens";
-import ActionAvaliar from "../Table/Action/ActionAvaliar/ActionAvaliar";
 import { useEffect, useState } from "react";
 
 function Main() {
@@ -17,8 +16,8 @@ function Main() {
     setHistoricoViagens, historico_viagens } = useModalContext();
 
   const columnsDesktop = ["Data e hora", "Nome", "Origem", "Destino", "Distância",
-    "Tempo decorrido", "Valor", "Avaliação"];
-  const columnsMobile = ["Data e hora", "Origem", "Destino", "Avaliação"];
+    "Tempo decorrido", "Valor"];
+  const columnsMobile = ["Data e hora", "Origem", "Destino"];
   
   const [isMobile, setIsMobile] = useState(false);
   
@@ -52,7 +51,6 @@ function Main() {
             const data = await response.json();
   
             if (data) {
-              // console.log(JSON.stringify(data));
               setHistoricoViagens(data.rides);
             }
           } catch (error: unknown) {
@@ -79,18 +77,6 @@ function Main() {
     
         return `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
     }
-
-    function converterSegundosParaMinutos(tempo: string): string {
-      const segundos = parseInt(tempo.replace('s', ''), 10);
-  
-      const minutos = Math.floor(segundos / 60);
-      const segundosRestantes = segundos % 60;
-  
-      const minutosFormatados = String(minutos).padStart(2, '0');
-      const segundosFormatados = String(segundosRestantes).padStart(2, '0');
-  
-      return `${minutosFormatados}:${segundosFormatados}`;
-  }
   
   const renderRow = (historico: HistoricoViagens) => (
     <>
@@ -99,11 +85,8 @@ function Main() {
       <td>{historico.origin}</td>
       <td>{historico.destination}</td>
       {!isMobile && <td>{historico.distance}</td>}
-      {!isMobile && <td>{converterSegundosParaMinutos(historico.duration)}</td>}
-      <td>{historico.value.toFixed(2)}</td>
-      <td>
-        <ActionAvaliar id={historico.id} isMobile={isMobile}/>
-      </td>
+      <td>{historico.duration}</td>
+      <td>R$ {historico.value.toFixed(2).replace(".", ",")}</td>
     </>
   );
 
