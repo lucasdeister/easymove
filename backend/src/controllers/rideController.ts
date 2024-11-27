@@ -3,12 +3,14 @@ import dbController from "./dbController.js";
 import { GoogleRoutesResponse } from "../../src/types/IResposta.js";
 // import dotenv from '../../node_modules/dotenv/config.js';
 import dotenv from "../../node_modules/dotenv/lib/main.js"
-import path from "path";
+// import path from "path";
 
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+// dotenv.config({ path: path.resolve(__dirname, '../.env') });
+dotenv.config();
 
 const API_KEY = process.env.GOOGLE_API_KEY;
 const BASE_URL = "https://routes.googleapis.com/directions/v2:computeRoutes";
+
 
 // Interfaces para tipos
 interface Driver {
@@ -80,6 +82,9 @@ async function getRides(customer_id: number, driver_id?: number) {
 }
 
 async function calcularEstimativa(origin: string, destination: string) {
+
+  console.log("API" + API_KEY);
+
   const data = await getTravel(origin, destination);
   const km = data.distancia / 1000;
 
