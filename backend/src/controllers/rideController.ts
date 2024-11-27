@@ -7,7 +7,7 @@ import dotenv from "../../node_modules/dotenv/lib/main.js"
 dotenv.config();
 
 const API_KEY = process.env.GOOGLE_API_KEY;
-const BASE_URL = process.env.BASE_URL;
+const BASE_URL = "https://routes.googleapis.com/directions/v2:computeRoutes";
 
 // Interfaces para tipos
 interface Driver {
