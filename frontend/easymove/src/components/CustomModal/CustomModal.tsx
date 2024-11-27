@@ -98,7 +98,7 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
   };
 
 
-  const confirmarViagem = () => {
+  const confirmarViagem = (): void => {
 
   }
 

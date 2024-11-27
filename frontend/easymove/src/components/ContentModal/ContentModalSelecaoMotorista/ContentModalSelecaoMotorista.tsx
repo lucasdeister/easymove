@@ -3,7 +3,7 @@ import styles from "./ContentModalSelecaoMotorista.module.scss"
 import Table from "../../Table/Table";
 import { useEffect, useState } from "react";
 import Motorista from "../../types/IMotorista";
-import Action from "../../Table/Action/Action";
+import ActionSelecionar from "../../Table/Action/ActionSelecionar/ActionSelecionar";
 import { useModalContext } from "../../../context/ModalContext";
 import { useJsApiLoader, GoogleMap, Marker,DirectionsRenderer, Libraries } from "@react-google-maps/api"
 
@@ -67,7 +67,7 @@ const ContentModalSelecaoMotorista = ({ motoristas }: ContentModalSelecaoMotoris
       </td>
       <td>{motorista.value.toFixed(2)}</td>
       <td>
-        <Action id={motorista.id} />
+        <ActionSelecionar id={motorista.id}/>
       </td>
     </>
   );

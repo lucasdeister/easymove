@@ -26,7 +26,7 @@ function BotaoPrincipal({ texto, classe, handleShow }: BotaoPrincipalProps) {
         <>
             <button 
                 className={`btn btn-outline-${classe}
-                btn-lg me-3 mb-3 text-dark`}
+                btn-lg me-3 mb-3 mt-5`}
                 onClick={handleOnClick}>{texto}
             </button>
         </>

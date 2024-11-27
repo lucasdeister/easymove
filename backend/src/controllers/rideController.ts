@@ -126,7 +126,7 @@ async function getGoogleRoute(origin: string, destination: string): Promise<Goog
           headers: {
               "Content-Type": "application/json",
               "X-Goog-Api-Key": API_KEY,
-              "X-Goog-FieldMask": "routes",
+              "X-Goog-FieldMask": "routes,geocodingResults,fallbackInfo",
           },
       }
   );

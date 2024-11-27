@@ -1,10 +1,15 @@
 export default interface HistoricoViagens {
     id: number;
+    date: string;
     nome_motorista: string;
-    data_hora: string;
-    origem: string;
-    destino: string;
-    distancia: string;
+    origin: string;
+    destination: string;
+    distance: number;
+    duration: string;
     tempo: string;
-    valor: number;
+    driver:{
+      id: number;
+      name: string;
+    };
+    value: number;
   }

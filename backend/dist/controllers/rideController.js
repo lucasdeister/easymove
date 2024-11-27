@@ -72,7 +72,7 @@ function getGoogleRoute(origin, destination) {
                 headers: {
                     "Content-Type": "application/json",
                     "X-Goog-Api-Key": API_KEY,
-                    "X-Goog-FieldMask": "routes",
+                    "X-Goog-FieldMask": "routes,geocodingResults,fallbackInfo",
                 },
             });
             return response.data;

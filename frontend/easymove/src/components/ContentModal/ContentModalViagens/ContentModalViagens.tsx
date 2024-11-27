@@ -26,21 +26,10 @@ function ContentModalViagens({
     <form>
       <Campo nome={"Id"} tipo={"number"} value={campo_id.toString()}
         onChange={(e) => setCampoId(parseInt(e.target.value))} />
-        
-      <Campo 
-          nome={"Origem"}
-          tipo={"text"}
-          value={campo_origem}
-          // value="Rio de Janeiro, State of Rio de Janeiro, Brazil"
-          onChange={(e) => setCampoOrigem(e.target.value)}
-     />
-      <Campo 
-          nome={"Destino"}
-          tipo={"text"}
-          value={campo_destino}
-          // value="Teresópolis, State of Rio de Janeiro, Brazil"
-          onChange={(e) => setCampoDestino(e.target.value)}
-      />
+      <Campo nome={"Origem"} tipo={"text"} value={campo_origem}
+        onChange={(e) => setCampoOrigem(e.target.value)}/>
+      <Campo nome={"Destino"} tipo={"text"} value={campo_destino}
+        onChange={(e) => setCampoDestino(e.target.value)}/>
     </form>
   );
 }

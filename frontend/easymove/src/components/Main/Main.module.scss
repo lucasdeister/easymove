@@ -17,3 +17,26 @@
   margin-right: auto;
   margin-left: auto;
 }
+
+
+.container_filtro{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  min-height: 150px;
+}
+
+.container_filtro{
+  input{
+    width: 10%;
+  }
+}
+
+
+.container_tabela_main{
+  display: flex;
+  justify-content: center;
+  margin-left: 10%;
+  margin-right: 10%;
+}

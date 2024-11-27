@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, ReactNode, useRef } from "react";
 import Motorista from "../components/types/IMotorista";
+import HistoricoViagens from "../components/types/IHistoricoViagens";
 
 interface ModalContextProps {
   modalState: boolean;
@@ -19,6 +20,9 @@ interface ModalContextProps {
   duration: string;
   originLocation: Location;
   motoristas: Motorista[];
+  campo_id_filtro: number;
+  motorista_id_filtro: number;
+  historico_viagens: HistoricoViagens[];
   setCampoOrigem: (campo_origem: string) => void;
   setCampoId: (campo_id: number) => void;
   setCampoDestino: (campo_destino: string) => void;
@@ -37,6 +41,9 @@ interface ModalContextProps {
   setOriginLocation: (location: Location) => void;
   setDirectionsResponse: (resposta: any) => void;
   setMotoristas: (motoristas: Motorista[]) => void;
+  setCampoIdFiltro: (campo_id_filtro: number) => void;
+  setMotoristaIdFiltro: (motorista_id_filtro: number) => void;
+  setHistoricoViagens: (historico_viagens: HistoricoViagens[]) => void;
 }
 
 interface Location{
@@ -72,6 +79,11 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
   const [originLocation, setOriginLocation] = useState<Location>({ lat: 0, lng: 0 });
 
   const [motoristas, setMotoristas] = useState<Motorista[]>([]);
+  
+  const [historico_viagens, setHistoricoViagens] = useState<HistoricoViagens[]>([]);
+
+  const [campo_id_filtro, setCampoIdFiltro] = useState<number>(1);
+  const [motorista_id_filtro, setMotoristaIdFiltro] = useState<number>(0);
 
   /** @type React.MutableRefObject<HTMLInputElement> */
   const originRef = useRef<HTMLInputElement>(null);
@@ -115,14 +127,6 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
   
       setDirectionsResponse(results);
   
-      // const rota = [
-      //   { origin: origem, destination: destino }
-      // ];
-  
-      // localStorage.setItem("rota", JSON.stringify(rota));
-
-      // console.log(JSON.stringify(directionsResponse));
-  
     } catch (error) {
       console.error("Erro ao calcular rota:", error);
     }
@@ -138,7 +142,9 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
       comentarioMotorista, setComentarioMotorista, idMotoristaSelecionado,
       setIdMotoristaSelecionado, originRef, destinationRef, calcularRota, limparRota,
       directionsResponse, distance, duration, setDistance, setDuration, originLocation,
-      setOriginLocation, setDirectionsResponse, motoristas, setMotoristas
+      setOriginLocation, setDirectionsResponse, motoristas, setMotoristas, campo_id_filtro,
+      setCampoIdFiltro, motorista_id_filtro, setMotoristaIdFiltro, historico_viagens,
+      setHistoricoViagens
     }}>
       {children}
     </ModalContext.Provider>
