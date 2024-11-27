@@ -84,7 +84,7 @@ function Main() {
       {!isMobile && <td>{historico.driver.name}</td>}
       <td>{historico.origin}</td>
       <td>{historico.destination}</td>
-      {!isMobile && <td>{historico.distance}</td>}
+      {!isMobile && <td>{historico.distance} Km</td>}
       <td>{historico.duration}</td>
       <td>R$ {historico.value.toFixed(2).replace(".", ",")}</td>
     </>
