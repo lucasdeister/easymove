@@ -70,6 +70,8 @@ async function salvarRide(
   );
 }
 
+const teste = 0;
+
 async function getRides(customer_id: number, driver_id?: number) {
   if (driver_id) {
     return await dbController.getRidesbyCustomerIdDriverId(customer_id, driver_id);
