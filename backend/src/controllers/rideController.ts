@@ -3,8 +3,9 @@ import dbController from "./dbController.js";
 import { GoogleRoutesResponse } from "../../src/types/IResposta.js";
 // import dotenv from '../../node_modules/dotenv/config.js';
 import dotenv from "../../node_modules/dotenv/lib/main.js"
+import path from "path";
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const API_KEY = process.env.GOOGLE_API_KEY;
 const BASE_URL = "https://routes.googleapis.com/directions/v2:computeRoutes";
