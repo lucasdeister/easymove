@@ -8,9 +8,9 @@ services:
     build: ./bd
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: '2606'
+      POSTGRES_PASSWORD: '123'
     ports:
-      - "5432:5432"
+      - "5433:5432"
     networks:
       - easymove
     container_name: database_server
@@ -24,9 +24,9 @@ services:
     container_name: backend_server
   
   frontend:
-    build: ./frontend
+    build: ./frontend/easymove
     ports:
-      - "80:80"
+      - "80:5173"
     networks:
       - easymove
     container_name: frontend_server

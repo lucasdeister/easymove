@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgres://postgres:123@localhost:5432/easymove"
+  url      = "postgres://postgres:123@database_server:5432/easymove"
   //"postgres://postgres:123@database_server:5432/easymove" //para rodar no docker
 }
 

@@ -31,8 +31,8 @@ function Main() {
     const handleFiltro = (): void => {
 
       async function filtrarResultados(id_customer: number, driver_id?: number) {
-          let url = `http://localhost:8080/ride/${id_customer}`;
-  
+          let url = `${import.meta.env.VITE_URL_BACKEND_LOCAL}/ride/${id_customer}`;
+
           if (driver_id && driver_id > 0) {
               url += `?driver_id=${driver_id}`;
           }
