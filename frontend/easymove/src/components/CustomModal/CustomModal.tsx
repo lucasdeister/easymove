@@ -65,7 +65,7 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
     if (campos_obrigatorios_preenchidos) {
 
       async function obterValorViagem() {
-        const url = `${import.meta.env.VITE_URL_BACKEND_LOCAL}/ride/estimate`;
+        const url = "http://localhost:8080/ride/estimate";
 
         try {
           const response = await fetch(url, {
@@ -112,7 +112,7 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
     if(idMotoristaSelecionado > 0){
 
       async function confirmarViagem() {
-        const url = `${import.meta.env.VITE_URL_BACKEND_LOCAL}/ride/confirm`;
+        const url = "http://localhost:8080/ride/confirm";
 
         const objViagem = {
           customer_id: campo_id,
