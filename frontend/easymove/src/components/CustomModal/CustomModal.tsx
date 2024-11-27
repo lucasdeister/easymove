@@ -21,14 +21,17 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
     motoristas, setMotoristas, idMotoristaSelecionado, duration, distance
   } = useModalContext();
 
-
   const fecharModal = (): void => {
     handleClose();
+
     if (nome_modal === "Confirmar viagem") {
       setModalNome("Solicitar viagem");
       setModalState(true);
       setIdMotoristaSelecionado(0);
       limparRota();
+      if(localStorage.getItem("dadosRota")){
+        localStorage.removeItem("dadosRota");
+      }
     }
     if (nome_modal === "Descrição motorista" || nome_modal === "Comentário motorista") {
       setModalNome("Confirmar viagem");
@@ -44,6 +47,12 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
       return true;
     }
   }
+
+  function salvarObjetoNoLocalStorage(chave: string, objeto: { origin: string; destination: string }): void {
+    localStorage.setItem(chave, JSON.stringify(objeto));
+}
+
+
 
   const estimarValorViagem = (): void => {
 
@@ -80,6 +89,7 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
             setDistance(data.routeResponse.routes[0].localizedValues.distance?.text);
             setDuration(data.routeResponse.routes[0].localizedValues.duration?.text);
             calcularRota();
+            salvarObjetoNoLocalStorage("dadosRota", { origin: campo_origem, destination: campo_destino });
             setModalSelecaoMotorista(true);
             setModalNome("Confirmar viagem");
           }
@@ -97,9 +107,7 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
     }
   };
 
-
   const handleConfirmar = (): void => {
-
 
     if(idMotoristaSelecionado > 0){
 
@@ -118,8 +126,6 @@ function CustomModal({ nome_modal, show, handleClose }: CustomModalProps) {
           },
           value: motoristas.find((u) => u.id === idMotoristaSelecionado)?.value
         }
-
-        console.log(objViagem);
 
         try {
           const response = await fetch(url, {

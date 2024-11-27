@@ -13,9 +13,9 @@ interface ContentModalSelecaoMotoristaProps {
 
 const ContentModalSelecaoMotorista = ({ motoristas }: ContentModalSelecaoMotoristaProps) => {
 
-  const { setModalNome, setDescricaoMotorista,
+  const { setModalNome, setDescricaoMotorista, setCampoOrigem, setCampoDestino,
     setModalDescricao, setComentarioMotorista,
-    directionsResponse, distance, duration, originLocation
+    directionsResponse, distance, duration, originLocation, campo_origem, campo_destino
    } = useModalContext();
 
   if (!import.meta.env.VITE_GOOGLE_MAPS_API_KEY) {
@@ -38,6 +38,23 @@ const ContentModalSelecaoMotorista = ({ motoristas }: ContentModalSelecaoMotoris
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+
+    function recuperarObjetoDoLocalStorage(chave: string): { origin: string; destination: string } | null {
+      const item = localStorage.getItem(chave);
+      return item ? JSON.parse(item) : null;
+    }
+    if(campo_origem === "" || campo_destino === ""){
+      const dadosRota = recuperarObjetoDoLocalStorage("dadosRota");
+      if(dadosRota?.origin){
+        setCampoOrigem(dadosRota?.origin);
+      }
+      if(dadosRota?.destination){
+        setCampoDestino(dadosRota?.destination);
+      }
+    }
   }, []);
 
 
